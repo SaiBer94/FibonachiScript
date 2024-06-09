@@ -27,4 +27,4 @@ is_fibonacci() {
         echo "$candidate is not a Fibonacci number."
         return 1
     fi
-fiexit 1Invalid input. Please enter a positive integer."
+fi exit 1 "Invalid input. Please enter a positive integer."
