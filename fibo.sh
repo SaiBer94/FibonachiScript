@@ -36,5 +36,5 @@ if [[ $input_number =~ ^[0-9]+$ ]]; then
     is_fibonacci "$input_number"
 else
     echo "Invalid input. Please enter a positive integer."
-    exit 1
+    exit 1
 fi
