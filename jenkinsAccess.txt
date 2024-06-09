@@ -15,7 +15,7 @@ pipeline {
                 git 'https://github.com/SaiBer94/FibonachiScript.git'  // Replace with your repository URL
             }
         }
-
+    }
         stage('Run Shell Script') {
             steps {
                 script {
