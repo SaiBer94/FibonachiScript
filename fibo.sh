@@ -1,5 +1,3 @@
-#!/bin/bash
-
 is_fibonacci() {
     local candidate=$1
 
