@@ -27,4 +27,14 @@ is_fibonacci() {
         echo "$candidate is not a Fibonacci number."
         return 1
     fi
-fi exit 1 "Invalid input. Please enter a positive integer."
+}
+
+input_number=$1
+
+if [[ $input_number =~ ^[0-9]+$ ]]; then
+    # Call the is_fibonacci function with the user input
+    is_fibonacci "$input_number"
+else
+    echo "Invalid input. Please enter a positive integer."
+    exit 1
+fi
