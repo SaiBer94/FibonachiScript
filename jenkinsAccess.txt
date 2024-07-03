@@ -1,25 +1,27 @@
 pipeline {
-    agent any
+    agent any  // The pipeline can run on any available agent
 
     parameters {
-        string(name: 'number', defaultValue: '0', description: 'A numeric parameter')
+        string(name: 'number', defaultValue: '0', description: 'A numeric parameter')  // Define a string parameter named 'number'
     }
 
     environment {
-        OUTPUT_FILE = 'output.html'
+        OUTPUT_FILE = 'output.html'  // Define an environment variable for the output file name
     }
 
     stages {
         stage('Clone Repository') {
             steps {
-                git 'https://github.com/SaiBer94/FibonachiScript.git'  // Replace with your repository URL
+                git 'https://github.com/SaiBer94/FibonachiScript.git'  // Clone the repository containing the script
             }
         }
 
         stage('Run Shell Script') {
             steps {
                 script {
+                    // Run the shell script with the provided parameter and capture the output
                     def output = sh(script: "bash newScript ${params.number}", returnStdout: true).trim()
+                    // Write the output to an HTML file
                     writeFile file: OUTPUT_FILE, text: "<html><body><h1>Output</h1><p>${output}</p></body></html>"
                 }
             }
@@ -28,6 +30,7 @@ pipeline {
         stage('Display Parameter') {
             steps {
                 script {
+                    // Set the current build's description to display the numeric parameter
                     currentBuild.description = "Numeric parameter is ${params.number}"
                 }
             }
@@ -36,6 +39,7 @@ pipeline {
         stage('Verify Parameter on Web Page') {
             steps {
                 script {
+                    // Verify if the parameter is included in the build's description
                     def description = currentBuild.description
                     if (description.contains("${params.number}")) {
                         echo "Parameter ${params.number} exists on the web page."
@@ -49,14 +53,15 @@ pipeline {
 
     post {
         always {
+            // Archive the output file and generate an HTML report
             archiveArtifacts artifacts: OUTPUT_FILE, fingerprint: true
             publishHTML(target: [
-                allowMissing: false,
-                alwaysLinkToLastBuild: true,
-                keepAll: true,
-                reportDir: '.',
-                reportFiles: OUTPUT_FILE,
-                reportName: 'Shell Script Output'
+                allowMissing: false,  // Fail the build if the report is missing
+                alwaysLinkToLastBuild: true,  // Link to the latest build report
+                keepAll: true,  // Keep reports from all builds
+                reportDir: '.',  // Directory where the report is located
+                reportFiles: OUTPUT_FILE,  // The name of the report file
+                reportName: 'Shell Script Output'  // Name of the report
             ])
         }
     }
