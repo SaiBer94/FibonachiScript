@@ -1,38 +1,38 @@
 #!/bin/bash
 
-# Check if the script received an argument
+# Function to check if a number is in the Fibonacci sequence
+is_fibonacci() {
+  local number=$1
+  local a=0
+  local b=1
+  local index=0
+
+  if [ "$number" -eq 0 ]; then
+    echo "$number is in the Fibonacci sequence, in index: 0"
+    return 0
+  fi
+
+  while [ $a -le $number ]; do
+    if [ $a -eq $number ]; then
+      echo "$number is in the Fibonacci sequence, in index: $index"
+      return 0
+    fi
+    local temp=$a
+    a=$b
+    b=$((temp + b))
+    index=$((index + 1))
+  done
+
+  echo "$number is not in the Fibonacci sequence"
+  return 1
+}
+
+# Main script execution
 if [ -z "$1" ]; then
   echo "No number provided. Usage: $0 <number>"
   exit 1
 fi
 
-# Read the input number
 number=$1
-
-# Initialize Fibonacci sequence
-a=0
-b=1
-index=0
-
-# Check if the number is 0
-if [ "$number" -eq 0 ]; then
-  echo "$number is in the Fibonacci sequence, in index: 0"
-  exit 0
-fi
-
-# Generate Fibonacci sequence and check for the number
-while [ $a -le $number ]; do
-  if [ $a -eq $number ]; then
-    echo "$number is in the Fibonacci sequence, in index: $index"
-    exit 0
-  fi
-  # Calculate next Fibonacci number
-  temp=$a
-  a=$b
-  b=$((temp + b))
-  index=$((index + 1))
-done
-
-# If the number was not found in the sequence
-echo "$number is not in the Fibonacci sequence"
+is_fibonacci "$number"
 exit 0
